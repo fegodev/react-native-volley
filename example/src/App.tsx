@@ -7,9 +7,9 @@ export default function App() {
 
   const fetchData = async function () {
     try {
-      const res = await Volley.fetch('https://reactnative.dev/movies.json', {});
-      console.log(res);
-      setResult(res);
+      const res = await Volley.fetch('https://reactnative.dev/movies.json');
+      const text = await res.text()
+      setResult(text);
     } catch (e) {
       console.log(JSON.stringify(e));
     }
