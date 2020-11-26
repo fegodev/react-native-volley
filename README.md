@@ -2,7 +2,7 @@
 
 React Native module that wraps [Google's Volley HTTP library for Android](https://github.com/google/volley).
 
-> Background: On Android in React Native `[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)` and `[XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)` depend on `google.webkit` API and `WebView`. On some devices, such as 'Wear OS by Google' smartwatches, `webkit` is not supported. With Volley you can make `webkit` independent HTTP requests.
+> Background: On Android in React Native `Fetch API` or `XMLHttpRequest` depend on the `google.webkit` API and `WebView`. On some devices, such as smartwatches for 'Wear OS by Google' (formerly 'Android Wear'), `webkit` is not supported. With Volley you can make `webkit` independent HTTP requests on Android.
 
 **Work in progress. ONLY use for testing.**
 
@@ -42,7 +42,7 @@ yarn add react-native-volley
 
 ## Usage
 
-`react-native-volley` mimics the structure of [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) but with limitations (see example options below).
+`react-native-volley` mimics [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) but with limitations (see example options below).
 
 ```js
 import Volley from 'react-native-volley';
@@ -52,7 +52,7 @@ const movies = await response.json().movies
 // ...
 ```
 
-`react-native-volley` is built for Android as a workaround for missing `webkit` support. However, you can safely use it on iOS as well. This works because `react-native-volley` simply returns a standard Fetch API promise when calling `Volley.fetch` on iOS.
+`react-native-volley` is built for Android as a workaround for missing `webkit` support. If you like to use it cross platform, please read the [cross platform best practice](#cross-platform) example.
 
 
 ## Example with options
@@ -62,8 +62,8 @@ const movies = await response.json().movies
 async function postData(url = '', data = {}) {
   // Default options are marked with *
   const response = await Volley.fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, OPTIONS
-    cache: 'no-cache', // *default, no-cache, force-cache (NOT SUPPORTED: reload, only-if-cached)
+    method: 'POST', // *GET, POST, PUT, DELETE, ...
+    cache: 'no-cache', // *default, no-cache, no-store, force-cache
     headers: {
       'Content-Type': 'application/json'
       // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -81,18 +81,28 @@ const data = await postData('https://example.com/answer', { answer: 42 })
 console.log(data); // JSON data parsed by `response.json()` call
 ```
 
-## Cross platform best practices
+## Cross platform
 
-If you like to use Volley on Android only when needed, best practice is to build a little request service that handles the different cases for you.
+If you like to use Volley cross platform and only when needed, best practice is to build a tiny service that handles the different cases for you.
 
-something like services/api.ts
+*something like* ../services/api.ts
 ```ts
-// ...
+import { Platform } from 'react-native'
+
+// Declare `useVolleyForFetch` logic.
+const useVolleyForFetch = Platform.OS === 'android'
+
+// Using ReNative? You might want to do this instead...
+// import { isAndroidWear } from 'react-native'
+// const useVolleyForFetch = isAndroidWear
+
 export default {
-  call: function(url: string, opts: object = {}) {
-    if (isWearOs) { // device needs Volley
+  call: (url: string, opts: object = {}) => {
+    if (useVolleyForFetch) {
+      // Device should use Volley.
       return Volley.fetch(url, opts)
-    } else { // we can use Fetch API
+    } else {
+      // We can use Fetch API (or something else).
       return fetch(url, opts)
     }
   }
@@ -106,3 +116,8 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 MIT
+
+## TODO
+
+- Send body
+- Return response headers

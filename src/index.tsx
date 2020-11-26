@@ -44,19 +44,19 @@ async function volleyFetch(url: RequestInfo, opts: Partial<OptionsType> = {}) {
     body: null
   }, opts);
 
-  const responseString = await Volley.fetch(url, fetchOpts);
+  const nativeResponse = await Volley.fetch(url, fetchOpts);
 
   return {
     ok: true,
-    status: 200,
+    status: nativeResponse.status,
     json: () => {
       return new Promise((resolve, reject) => {
-        try { resolve(JSON.parse(responseString)) } catch (err) { reject(err) }
+        try { resolve(JSON.parse(nativeResponse.body)) } catch (err) { reject(err) }
       })
     },
     text: () => {
       return new Promise((resolve, reject) => {
-        try { resolve(responseString) } catch (err) { reject(err) }
+        try { resolve(nativeResponse.body) } catch (err) { reject(err) }
       })
     }
   }
