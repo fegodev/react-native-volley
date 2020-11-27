@@ -5,6 +5,7 @@ import Volley from 'react-native-volley';
 export default function App() {
   const [result, setResult] = React.useState<string | undefined>();
   const [status, setStatus] = React.useState<number | undefined>();
+  const [headers, setHeaders] = React.useState<string | undefined>();
 
   const urlAndOptsForMethod: { [index: string]: any } = {
     'GET': {
@@ -50,13 +51,17 @@ export default function App() {
       const context = urlAndOptsForMethod[method]
       const res = await Volley.fetch(context.url, context.opts)
       if (res?.ok) {
-        console.log(JSON.stringify(res));
+        let headersJson: { [index: string]: any } = {}
+        res.headers.forEach((v: any, k: string) => {
+          headersJson[k] = v
+        })
+        const headers = JSON.stringify(headersJson)
         const status = res.status
         const text = await res.text()
         setStatus(status)
         setResult(text)
+        setHeaders(headers)
       }
-
     } catch (e) {
       console.log(JSON.stringify(e));
     }
@@ -70,6 +75,7 @@ export default function App() {
       <Button title="DELETE" onPress={() => fetchData('DELETE')} />
       <Text>Status: {status}</Text>
       <Text>Result: {result}</Text>
+      <Text>Headers: {headers}</Text>
     </View>
   );
 }

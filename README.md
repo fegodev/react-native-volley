@@ -46,13 +46,14 @@ yarn add react-native-volley
 
 ```js
 import Volley from 'react-native-volley';
-// ...
+
+// Somewhere in an `async` function ...
 const response = await Volley.fetch('https://reactnative.dev/movies.json')
 const movies = await response.json().movies
 // ...
 ```
 
-`react-native-volley` is built for Android as a workaround for missing `webkit` support. If you like to use it cross platform, please read the [cross platform best practice](#cross-platform) example.
+`react-native-volley` is built for Android as a workaround for missing `webkit` support. If you like to use it cross platform, please read the [cross platform example](#cross-platform-example).
 
 
 ## Example with options
@@ -81,7 +82,7 @@ const data = await postData('https://example.com/answer', { answer: 42 })
 console.log(data); // JSON data parsed by `response.json()` call
 ```
 
-## Cross platform
+## Cross platform example
 
 If you like to use Volley cross platform and only when needed, best practice is to build a tiny service that handles the different cases for you.
 
@@ -107,6 +108,13 @@ export default {
     }
   }
 }
+```
+*Then in some component...*
+```ts
+import api from '../path/to/services/api.ts'
+// In some `async` function...
+const response = await api.call('https://reactnative.dev/movies.json')
+// ...
 ```
 
 ## Contributing
