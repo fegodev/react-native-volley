@@ -22,7 +22,7 @@ yarn add react-native-volley
   "plugins": {
       // ...
       "react-native-volley": {
-          "version": "github:fegodev/react-native-volley#0.0.1",
+          "version": "^0.1.0",
           "android": {
               "package": "com.reactnativevolley.VolleyPackage",
               "implementations": [
@@ -124,8 +124,3 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 MIT
-
-## TODO
-
-- Send body
-- Return response headers
