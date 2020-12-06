@@ -1,6 +1,6 @@
 {
   "name": "react-native-volley",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React Native wrapper for the Volley HTTP library for Android",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -11,7 +11,6 @@
     "src",
     "lib",
     "android",
-    "ios",
     "cpp",
     "react-native-volley.podspec",
     "!lib/typescript/example",
@@ -34,10 +33,12 @@
     "android",
     "android wear",
     "wear os",
+    "google",
     "volley",
     "http",
     "request",
-    "webkit"
+    "webkit",
+    "webview"
   ],
   "repository": "https://github.com/fegodev/react-native-volley",
   "author": "fegodev (https://github.com/fegodev)",

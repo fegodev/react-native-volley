@@ -68,15 +68,17 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <Button title="GET" onPress={() => fetchData('GET')} />
-      <Button title="POST" onPress={() => fetchData('POST')} />
-      <Button title="PUT" onPress={() => fetchData('PUT')} />
-      <Button title="DELETE" onPress={() => fetchData('DELETE')} />
-      <Text>Status: {status}</Text>
-      <Text>Result: {result}</Text>
-      <Text>Headers: {headers}</Text>
-    </View>
+    <View style={styles.container} >
+      <View style={styles.control}>
+        <Button title="GET" onPress={() => fetchData('GET')} />
+        <Button title="POST" onPress={() => fetchData('POST')} />
+        <Button title="PUT" onPress={() => fetchData('PUT')} />
+        <Button title="DELETE" onPress={() => fetchData('DELETE')} />
+      </View>
+      <Text style={styles.output}>Status: {status}</Text>
+      <Text style={styles.output}>Result: {result}</Text>
+      <Text style={styles.output}>Headers: {headers}</Text>
+    </View >
   );
 }
 
@@ -86,4 +88,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  control: {
+    display: 'flex',
+    width: '75%',
+    justifyContent: 'space-around',
+    flexDirection: 'row'
+  },
+  output: {
+    marginTop: 10
+  }
 });

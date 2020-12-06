@@ -4,13 +4,13 @@ React Native module that wraps [Google's Volley HTTP library for Android](https:
 
 > Background: On Android in React Native `Fetch API` or `XMLHttpRequest` depend on the `google.webkit` API and `WebView`. On some devices, such as smartwatches for 'Wear OS by Google' (formerly 'Android Wear'), `webkit` is not supported. With Volley you can make `webkit` independent HTTP requests on Android.
 
-**Work in progress. ONLY use for testing.**
-
 ## Installation
 
 ```sh
 npm install react-native-volley
-// or
+```
+*- or -*
+```sh
 yarn add react-native-volley
 ```
 <details>
@@ -22,7 +22,7 @@ yarn add react-native-volley
   "plugins": {
       // ...
       "react-native-volley": {
-          "version": "^0.1.0",
+          "version": "^0.1.1", // <- Replace with latest version
           "android": {
               "package": "com.reactnativevolley.VolleyPackage",
               "implementations": [
@@ -42,7 +42,7 @@ yarn add react-native-volley
 
 ## Usage
 
-`react-native-volley` mimics [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) but with limitations (see example options below).
+`react-native-volley` mimics [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) but with limitations (see [example with options](#example-with-options) below).
 
 ```js
 import Volley from 'react-native-volley';
@@ -86,19 +86,18 @@ console.log(data); // JSON data parsed by `response.json()` call
 
 If you like to use Volley cross platform and only when needed, best practice is to build a tiny service that handles the different cases for you.
 
-*something like* ../services/api.ts
+*something like* `../services/HttpService.ts`
 ```ts
+// Add `useVolleyForFetch` logic.
 import { Platform } from 'react-native'
-
-// Declare `useVolleyForFetch` logic.
 const useVolleyForFetch = Platform.OS === 'android'
 
 // Using ReNative? You might want to do this instead...
-// import { isAndroidWear } from 'react-native'
+// import { isAndroidWear } from 'renative'
 // const useVolleyForFetch = isAndroidWear
 
-export default {
-  call: (url: string, opts: object = {}) => {
+export class HttpService {
+  async fetch(url: string, opts: object = {}) {
     if (useVolleyForFetch) {
       // Device should use Volley.
       return Volley.fetch(url, opts)
@@ -111,9 +110,9 @@ export default {
 ```
 *Then in some component...*
 ```ts
-import api from '../path/to/services/api.ts'
+import { HttpService } from '../path/to/services/HttpService.ts'
 // In some `async` function...
-const response = await api.call('https://reactnative.dev/movies.json')
+const response = await HttpService.fetch('https://reactnative.dev/movies.json')
 // ...
 ```
 

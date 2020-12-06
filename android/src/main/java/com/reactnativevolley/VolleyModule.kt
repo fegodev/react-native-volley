@@ -70,14 +70,14 @@ class VolleyModule(reactContext: ReactApplicationContext) : ReactContextBaseJava
         }
 
         override fun getBody(): ByteArray? {
-          if (opts.getType("body") as Any? is String) {
-            try {
-              return opts.getString("body")?.toByteArray(Charset.forName(paramsEncoding))
-            } catch (error: UnsupportedEncodingException) {
-              promise.reject(error)
-            }
+          try {
+            return opts.getString("body")?.toByteArray(Charset.forName(getParamsEncoding()))
+          } catch (error: UnsupportedEncodingException) {
+            // promise.reject(error)
+            // Using Promise caused problems. Seems like the HTTP request never completes then.
+            // We ingnore malformed body and return null.
+            return null
           }
-          return null
         }
 
         override fun deliverResponse(response: WritableMap) = listener.onResponse(response)
