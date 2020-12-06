@@ -88,6 +88,8 @@ If you like to use Volley cross platform and only when needed, best practice is 
 
 *something like* `../services/HttpService.ts`
 ```ts
+import Volley from 'react-native-volley';
+
 // Add `useVolleyForFetch` logic.
 import { Platform } from 'react-native'
 const useVolleyForFetch = Platform.OS === 'android'
