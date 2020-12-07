@@ -1,6 +1,6 @@
 {
   "name": "react-native-volley",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React Native wrapper for the Volley HTTP library for Android",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
