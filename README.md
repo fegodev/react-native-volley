@@ -22,7 +22,7 @@ yarn add react-native-volley
   "plugins": {
       // ...
       "react-native-volley": {
-          "version": "^0.1.1", // <- Replace with latest version
+          "version": "^0.1.2", // <- Replace with latest version
           "android": {
               "package": "com.reactnativevolley.VolleyPackage",
               "implementations": [
@@ -95,10 +95,10 @@ import { Platform } from 'react-native'
 const useVolleyForFetch = Platform.OS === 'android'
 
 // Using ReNative? You might want to do this instead...
-// import { isAndroidWear } from 'renative'
-// const useVolleyForFetch = isAndroidWear
+// import { isPlatformAndroidwear } from 'renative'
+// const useVolleyForFetch = isPlatformAndroidwear
 
-export class HttpService {
+export default {
   async fetch(url: string, opts: object = {}) {
     if (useVolleyForFetch) {
       // Device should use Volley.
@@ -112,7 +112,7 @@ export class HttpService {
 ```
 *Then in some component...*
 ```ts
-import { HttpService } from '../path/to/services/HttpService.ts'
+import HttpService from '../path/to/services/HttpService.ts'
 // In some `async` function...
 const response = await HttpService.fetch('https://reactnative.dev/movies.json')
 // ...
