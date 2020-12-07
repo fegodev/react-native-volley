@@ -2,6 +2,7 @@ package com.reactnativevolley
 
 import com.android.volley.Response
 import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.NetworkResponse
 import com.android.volley.toolbox.Volley
 import com.android.volley.toolbox.HttpHeaderParser
@@ -14,6 +15,14 @@ class VolleyModule(reactContext: ReactApplicationContext) : ReactContextBaseJava
     override fun getName(): String {
       return "Volley"
     }
+
+    // Kotlin Volley example app
+    // See: https://github.com/Kotlin/kotlin-examples/tree/master/gradle/android-volley/app/src/main/java/org/example/kotlin/volley
+
+    /**
+     * The volly RequestQueue should only be instantiated once.
+     */
+    val requestQueue: RequestQueue by lazy { Volley.newRequestQueue(reactApplicationContext) }
 
     /**
      * Make a HTTP request.
@@ -45,9 +54,7 @@ class VolleyModule(reactContext: ReactApplicationContext) : ReactContextBaseJava
         else -> true
       }
 
-      // Instantiate the RequestQueue.
-      val requestQueue = Volley.newRequestQueue(reactApplicationContext)
-
+      // Define event listeners.
       val listener = Response.Listener<WritableMap> { response ->
         promise.resolve(response)
       }
@@ -55,6 +62,7 @@ class VolleyModule(reactContext: ReactApplicationContext) : ReactContextBaseJava
         promise.reject(error)
       }
 
+      // Instantiate the request.
       val request = object: Request<WritableMap>(method, url, errorListener) {
 
         override fun getHeaders(): MutableMap<String, String> {
@@ -74,7 +82,6 @@ class VolleyModule(reactContext: ReactApplicationContext) : ReactContextBaseJava
             return opts.getString("body")?.toByteArray(Charset.forName(getParamsEncoding()))
           } catch (error: UnsupportedEncodingException) {
             // promise.reject(error)
-            // Using Promise caused problems. Seems like the HTTP request never completes then.
             // We ingnore malformed body and return null.
             return null
           }
@@ -124,7 +131,7 @@ class VolleyModule(reactContext: ReactApplicationContext) : ReactContextBaseJava
       // Set caching settings.
       request.setShouldCache(shouldCache)
 
-      // Add the request to the RequestQueue.
+      // Add request to RequestQueue.
       requestQueue.add(request)
 
     }

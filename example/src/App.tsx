@@ -62,8 +62,8 @@ export default function App() {
         setResult(text)
         setHeaders(headers)
       }
-    } catch (e) {
-      console.log(JSON.stringify(e));
+    } catch (err) {
+      console.log(JSON.stringify(err));
     }
   };
 
